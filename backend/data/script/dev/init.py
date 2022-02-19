@@ -25,11 +25,11 @@ def create_jenkins_directory():
 
 def apply_kubernetes_jenkins(k8s_client):
     resource_files = [
-            'data/kubernetes/dev/jenkins-pv-volume.yaml',
-            'data/kubernetes/dev/jenkins-pv-claim.yaml',
-            'data/kubernetes/dev/jenkins-deployment.yaml',
-            'data/kubernetes/dev/jenkins-service.yaml',
-            'data/kubernetes/dev/jenkins-ingress.yaml',
+            'backend/data/kubernetes/dev/jenkins-pv-volume.yaml',
+            'backend/data/kubernetes/dev/jenkins-pv-claim.yaml',
+            'backend/data/kubernetes/dev/jenkins-deployment.yaml',
+            'backend/data/kubernetes/dev/jenkins-service.yaml',
+            'backend/data/kubernetes/dev/jenkins-ingress.yaml',
                  ]
     for resource_file in resource_files:
         helper.apply_kubernetes_or_handle_error(k8s_client, resource_file)
@@ -56,6 +56,7 @@ def main():
         create_jenkins_directory()
         apply_kubernetes_jenkins(k8s_client)
         wait_for_jenkins_ready(k8s_client, k8s_watch, k8s_core_v1)
+
 
 if __name__ == '__main__':
     main()
