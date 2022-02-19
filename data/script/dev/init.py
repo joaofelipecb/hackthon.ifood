@@ -1,0 +1,82 @@
+import kubernetes as k8s
+import os
+import shutil
+import json
+import subprocess
+
+def create_jenkins_directory():
+    def create_dir_if_not_exists(dir_path):
+        try:
+            os.mkdir(dir_path)
+        except FileExistsError:
+            pass
+
+    def change_ownership_recursive(dir_path):
+        for root, dirs, files in os.walk(dir_path):
+            for momo in dirs:
+                os.chown(os.path.join(root, momo), user=1000, group=1000)
+            for momo in files:
+                os.chown(os.path.join(root, momo), user=1000, group=1000)
+
+    dir_path = '/opt/jenkins-data'
+    create_dir_if_not_exists(dir_path)
+    change_ownership_recursive(dir_path)
+
+
+def apply_kubernetes_jenkins(k8s_client):
+    resource_files = [
+            'data/kubernetes/dev/jenkins-pv-volume.yaml',
+            'data/kubernetes/dev/jenkins-pv-claim.yaml',
+            'data/kubernetes/dev/jenkins-deployment.yaml',
+            'data/kubernetes/dev/jenkins-service.yaml',
+            'data/kubernetes/dev/jenkins-ingress.yaml',
+                 ]
+    for resource_file in resource_files:
+        try:
+            k8s.utils.create_from_yaml(k8s_client, resource_file)
+            print(f'Resource {resource_file} created')
+        except k8s.utils.FailToCreateError as e:
+            for api_exception in e.api_exceptions:
+                data = json.loads(api_exception.body)
+                if data.get('reason') == 'AlreadyExists':
+                    print((
+                           f'Resource {resource_file} not created '
+                           'because it already exists'
+                          ))
+                else:
+                    raise e
+                
+
+def wait_for_jenkins_ready(k8s_client, k8s_watch, k8s_core_v1):
+    print('Waiting for all be ready...')
+    for event in k8s_watch.stream(
+                              func=k8s_core_v1.list_namespaced_pod,
+                              namespace='default',
+                              label_selector='app=jenkins',
+                              timeout_seconds=60
+                             ):
+        if event['object'].status.phase == 'Running':
+            k8s_watch.stop()
+            return
+
+
+def portforward_jenkins():
+    # This is necessary because in WSL kubectl command
+    # is called kubectl.exe. So, in order to use the
+    # user defined alias, we need this bash envelop
+    cmd = 'kubectl port-forward service/jenkins 8080:8080'
+    bash_envelop = ['/bin/bash', '-i', '-c', cmd]
+    subprocess.call(bash_envelop)
+
+def main():
+    k8s.config.load_kube_config()
+    with k8s.client.ApiClient() as k8s_client:
+        k8s_watch = k8s.watch.Watch()
+        k8s_core_v1 = k8s.client.CoreV1Api(k8s_client)
+
+        create_jenkins_directory()
+        apply_kubernetes_jenkins(k8s_client)
+        wait_for_jenkins_ready(k8s_client, k8s_watch, k8s_core_v1)
+
+if __name__ == '__main__':
+    main()
