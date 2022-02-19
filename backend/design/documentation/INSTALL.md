@@ -72,18 +72,18 @@ Instale o Python Virtualenv
 
 Crie um ambiente python
 
-        virtualenv data/python/dev
+        virtualenv backend/data/python/dev
 
 Entre no ambiente virtual
 
-        source data/python/dev/bin/activate
+        source backend/data/python/dev/bin/activate
 
 Instale os requirements.txt
 
-        python -m pip install -r data/python/dev/requirements.txt
+        python -m pip install -r backend/data/python/dev/requirements.txt
 
 ## Execute o Script de Inicialização
 
 Para executar o Script de Inicialização, execute o seguinte comando.
 
-        python data/script/dev/init.py
+        python backend/data/script/dev/init.py
