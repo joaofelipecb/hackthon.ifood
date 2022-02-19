@@ -1,5 +1,6 @@
 **/.*
 **/__pycache__/**
+**/*secret*
 backend/data/python/dev/bin/**
 backend/data/python/dev/lib/**
 backend/data/python/dev/lib64/**
