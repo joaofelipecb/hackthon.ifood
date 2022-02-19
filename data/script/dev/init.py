@@ -3,6 +3,7 @@ import os
 import shutil
 import json
 import subprocess
+import helper
 
 def create_jenkins_directory():
     def create_dir_if_not_exists(dir_path):
@@ -32,20 +33,7 @@ def apply_kubernetes_jenkins(k8s_client):
             'data/kubernetes/dev/jenkins-ingress.yaml',
                  ]
     for resource_file in resource_files:
-        try:
-            k8s.utils.create_from_yaml(k8s_client, resource_file)
-            print(f'Resource {resource_file} created')
-        except k8s.utils.FailToCreateError as e:
-            for api_exception in e.api_exceptions:
-                data = json.loads(api_exception.body)
-                if data.get('reason') == 'AlreadyExists':
-                    print((
-                           f'Resource {resource_file} not created '
-                           'because it already exists'
-                          ))
-                else:
-                    raise e
-                
+        helper.apply_kubernetes_or_handle_error(k8s_client, resource_file)
 
 def wait_for_jenkins_ready(k8s_client, k8s_watch, k8s_core_v1):
     print('Waiting for all be ready...')
@@ -59,14 +47,6 @@ def wait_for_jenkins_ready(k8s_client, k8s_watch, k8s_core_v1):
             k8s_watch.stop()
             return
 
-
-def portforward_jenkins():
-    # This is necessary because in WSL kubectl command
-    # is called kubectl.exe. So, in order to use the
-    # user defined alias, we need this bash envelop
-    cmd = 'kubectl port-forward service/jenkins 8080:8080'
-    bash_envelop = ['/bin/bash', '-i', '-c', cmd]
-    subprocess.call(bash_envelop)
 
 def main():
     k8s.config.load_kube_config()
