@@ -29,6 +29,11 @@ Ative o Kubernetes.
 
 ## Kubernetes NGINX Ingress
 
+Crie uma alias para o kubectl.exe
+
+        echo 'alias kubectl="kubectl.exe"' >> .bashrc
+        source .bashrc
+
 Para instalar o NGINX Ingress utilize os seguintes comandos no Ubuntu.
 
         kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml
