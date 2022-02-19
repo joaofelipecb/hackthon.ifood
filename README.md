@@ -24,7 +24,7 @@ Outro foco será a possibilidade da inteligênciar artificial ajudar o usuário 
 
 ## Instalação
 
-Clique aqui para verificar a documentação para instalação.
+[Clique aqui](design/documentation/INSTALL.md) para verificar a documentação para instalação.
 
 ## Uso
 
