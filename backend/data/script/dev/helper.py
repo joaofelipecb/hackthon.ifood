@@ -102,3 +102,18 @@ def delete_persistent_volume(k8s_core_v1, object_name):
             raise e
 
 
+def delete_secret(k8s_core_v1, object_name):
+    try:
+        k8s_core_v1.delete_namespaced_service(
+                object_name,
+                namespace = 'default'
+                )
+        print(f'Secret {object_name} deleted')
+    except k8s.client.exceptions.ApiException as e:
+        if e.reason == 'Not Found':
+            print((
+                   f'Secret {object_name} not deleted '
+                   'because it was not found'
+                  ))
+        else:
+            raise e
