@@ -1,7 +1,6 @@
 import kubernetes as k8s
 import os
 import shutil
-import json
 import subprocess
 import helper
 
