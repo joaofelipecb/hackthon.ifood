@@ -1,0 +1,7 @@
+**/.*
+**/__pycache__/**
+backend/data/python/dev/bin/**
+backend/data/python/dev/lib/**
+backend/data/python/dev/lib64/**
+backend/data/python/dev/include/**
+backend/data/python/dev/share/**
