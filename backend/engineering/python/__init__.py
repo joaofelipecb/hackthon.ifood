@@ -2,7 +2,7 @@ import os
 import json
 from copy import deepcopy
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import sqlalchemy as sa
 from backend.engineering.python import model
 
@@ -45,5 +45,9 @@ def create_app(test_config=None):
                     )
             result.append(result_ingredient)
         return jsonify(result)
+
+    @app.route('/')
+    def index():
+        return render_template('index.html')
 
     return app
