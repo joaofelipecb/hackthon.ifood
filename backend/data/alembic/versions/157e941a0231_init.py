@@ -54,8 +54,8 @@ def upgrade():
     op.create_table(
             'product',
             sa.Column('id', sa.Integer, primary_key=True),
-            sa.Column('name', sa.String(200), nullable=False),
-            sa.Column('image', sa.String(200), nullable=False),
+            sa.Column('name', sa.String(500), nullable=False),
+            sa.Column('image', sa.String(1000), nullable=False),
             sa.Column('amount', sa.Float, nullable=False),
             sa.Column('amount_unit', sa.String(20), nullable=False),
             sa.Column('vegetarian', sa.Boolean, nullable=False),

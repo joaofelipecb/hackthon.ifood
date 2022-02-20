@@ -70,6 +70,48 @@ ingredient_x_product_datum.append({
     'score': 0.92,
     })
 
+ingredient_x_product_datum.append({
+    'ingredient': 'Massa de Lasanha',
+    'product': 'Lasanha Massa Vitarella',
+    'score': 0.52,
+    })
+
+ingredient_x_product_datum.append({
+    'ingredient': 'Massa de Lasanha',
+    'product': 'Massa para Lasanha e Canelone DA BOA',
+    'score': 0.29,
+    })
+
+ingredient_x_product_datum.append({
+    'ingredient': 'Carne Moída',
+    'product': 'Carne Moído Congelado Friboi',
+    'score': 0.29,
+    })
+
+ingredient_x_product_datum.append({
+    'ingredient': 'Carne Moída',
+    'product': 'Carne Moída Resfriada 1kg',
+    'score': 0.79,
+    })
+
+ingredient_x_product_datum.append({
+    'ingredient': 'Carne Moída',
+    'product': 'Carne Moída Soja Superbom 250g',
+    'score': 0.49,
+    })
+
+ingredient_x_product_datum.append({
+    'ingredient': 'Molho de Tomate',
+    'product': 'La Pianezza Molho de Tomate Tradicional',
+    'score': 0.96,
+    })
+
+ingredient_x_product_datum.append({
+    'ingredient': 'Molho de Tomate',
+    'product': 'Molho de Tomate Tradicional Predilecta 340G',
+    'score': 0.68,
+    })
+
 def replace_name_to_id(ingredient_x_product_data):
     ret = session.execute(
             sa.select(ingredient.c.id).
