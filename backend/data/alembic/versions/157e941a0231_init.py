@@ -107,6 +107,10 @@ def upgrade():
             sa.Column('product_id', sa.Integer, sa.ForeignKey('product.id'), nullable=False),
             sa.Column('score', sa.Float, nullable=False),
             )
+    op.create_unique_constraint(
+            'uq_ai_param', 'ai_similarity_ingredient_x_product_customer',
+            ['customer_id','ingredient_id','product_id']
+            )
 
     op.create_table(
             'ai_similarity_ingredient_x_product_default',
@@ -128,6 +132,9 @@ def upgrade():
 def downgrade():
     op.drop_table('log_similarity_ingredient_x_product_customer')
     op.drop_table('ai_similarity_ingredient_x_product_default')
+    op.drop_constraint(
+            'uq_ai_param', 'ai_similarity_ingredient_x_product_customer'
+            )
     op.drop_table('ai_similarity_ingredient_x_product_customer')
     op.drop_table('ai_weight_default')
     op.drop_table('ai_weight_customer')
