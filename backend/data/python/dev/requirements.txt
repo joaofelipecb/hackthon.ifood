@@ -3,12 +3,16 @@ astroid==2.9.3
 cachetools==5.0.0
 certifi==2021.10.8
 charset-normalizer==2.0.12
+click==8.0.4
+Flask==2.0.3
 google-auth==2.6.0
 greenlet==1.1.2
 idna==3.3
 importlib-metadata==4.11.1
 importlib-resources==5.4.0
 isort==5.10.1
+itsdangerous==2.1.0
+Jinja2==3.0.3
 kubernetes==22.6.0
 lazy-object-proxy==1.7.1
 Mako==1.1.6
@@ -34,6 +38,7 @@ toml==0.10.2
 typing-extensions==4.1.1
 urllib3==1.26.8
 websocket-client==1.2.3
+Werkzeug==2.0.3
 wheel==0.34.2
 wrapt==1.13.3
 zipp==3.7.0
