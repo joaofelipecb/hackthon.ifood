@@ -12,10 +12,27 @@ body{
     margin:0px;
 }
 header{
-    text-align: center;
+    padding-bottom:2px;
+    margin-bottom:2px;
+    border-bottom:1px solid #eeeeee;
+    display:table;
+}
+.botao4{
+    color:#EA1D2C;
+    font-size:18pt;
+    display:inline-block;
+    display:table-cell;
+    padding:5px;
+    padding-left:10px;
+    font-weight:bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .fonte1{
+    text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color:#333333;
+    display:table-cell;
+    width:100%;
 }
 .container1{
     display:flex;
@@ -67,6 +84,7 @@ header{
     margin:5px;
     margin-left:10px;
     margin-right:10px;
+    width:100px;
 }
 .botao3 img{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -88,7 +106,7 @@ footer{
 .container2{
     display:table;
     background-color:#EA1D2C;
-    width:384px;
+    width:344px;
     padding:10px;
     padding-left:20px;
     padding-right:20px;
@@ -117,13 +135,12 @@ footer{
 </head>
 <body>
     <header>
-        <div>
-            <span class="fonte1">iFood Receitas</span>
-        </div>
+        <div class="botao4">&lt;</div>
+        <div class="fonte1">iFood Receitas</div>
     </header>
     <main>
         <div class="container1">
-            <div class="botao1">Ordenar</div>
+            <div class="botao1">Ordenar <span style="font-size:10pt;">&#x25BC;</span></div>
             <div class="botao1">Vegano</div>
             <div class="botao1">Diet</div>
             <div class="botao1">Sem Lactose</div>
@@ -142,7 +159,8 @@ footer{
                 <div>Mercado</div>
             </div>
         </div>
-        <div>
+        <div id="placeholder1"></div>
+        <!--<div>
             <div class="titulo1">Massas</div>
             <div class="container1">
                 <div class="botao3">
@@ -204,7 +222,7 @@ footer{
                     <div>Nome Produto</div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </main>
     <footer>
         <div class="container2">
@@ -214,7 +232,7 @@ footer{
             <div>
                 Ver sacola
             </div>
-            <div>
+            <div style="text-align:right;">
                 R$ 34,00
             </div>
         </div>
@@ -238,4 +256,45 @@ footer{
         </div>
     </footer>
 </body>
+<script>
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+     var datum = this.response;
+     console.log(datum)
+     var placeholder1 = document.getElementById('placeholder1');
+     for(var i in datum){
+        data = datum[i];
+        console.log(data)
+        var div = document.createElement('div');
+        var titulo1 = document.createElement('div');
+        var container1 = document.createElement('div');
+        container1.className = 'container1';
+        titulo1.className = 'titulo1';
+        titulo1.innerHTML = data['name'];
+        for(var j in data['product_recomendation']){
+            var data_product = data['product_recomendation'][j];
+            var botao3 = document.createElement('div');
+            botao3.className = 'botao3';
+            var img = document.createElement('img');
+            img.src = data_product['image'];
+            var div3 = document.createElement('div');
+            div3.innerHTML = data_product['name'];
+            botao3.appendChild(img);
+            botao3.appendChild(div3);
+            container1.appendChild(botao3);
+        }
+        div.appendChild(titulo1);
+        div.appendChild(container1);
+        placeholder1.appendChild(div);
+     }
+    }
+  };
+  xhttp.responseType = 'json'
+  xhttp.open("GET", "http://localhost:5000/recipe/Lasanha%20de%20Carne%20Mo%C3%ADda/product_recomendation", true);
+  xhttp.send();
+}
+loadDoc();
+</script>
 </html>
