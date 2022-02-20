@@ -1,4 +1,4 @@
-Table recipe {
+e {
   id int [pk]
   name varchar [not null]
   description text
@@ -12,7 +12,7 @@ Table ingredient {
 Table ingredient_x_recipe {
   id int [pk]
   recipe_id int [ref: > recipe.id, not null]
-  ingredient_id int [ref: > recipe.id, not null]
+  ingredient_id int [ref: > ingredient.id, not null]
   amount float [not null]
   amount_unit varchar [not null]
 }
@@ -82,4 +82,11 @@ Table ai_similarity_ingredient_x_product_default {
   ingredient_id int [ref: > ingredient.id, not null]
   product_id int [ref: > product.id, not null]
   score float [not null]
+}
+
+Table log_similarity_ingredient_x_product_customer {
+  id int [pk]
+  customer_id int [ref: > customer.id, not null]
+  ingredient_id int [ref: > ingredient.id, not null]
+  product_id int [ref: > product.id, not null]
 }

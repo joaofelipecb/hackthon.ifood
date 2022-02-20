@@ -172,7 +172,7 @@ def downgrade():
     def downgrade_product(product_x_grocery_datum, grocery_id):
         for product_x_grocery_data in product_x_grocery_datum:
             product_x_grocery_data = deepcopy(product_x_grocery_data)
-            product_x_grocery_data['product_id'] = product_id
+            product_x_grocery_data['grocery_id'] = grocery_id
             product_data, product_x_grocery_data = (
                     split_product_normalized(product_x_grocery_data)
                     )
@@ -206,7 +206,7 @@ def downgrade():
         product_x_grocery_datum = []
         if 'product' in grocery_data:
             product_x_grocery_datum = deepcopy(grocery_data['product'])
-            del recipe_data['product']
+            del grocery_data['product']
         ret = session.execute(
                 sa.select(grocery.c.id).
                 where(grocery.c.name == grocery_data['name'])

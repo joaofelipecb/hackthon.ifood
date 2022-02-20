@@ -116,8 +116,17 @@ def upgrade():
             sa.Column('score', sa.Float, nullable=False),
             )
 
+    op.create_table(
+            'log_similarity_ingredient_x_product_customer',
+            sa.Column('id', sa.Integer, primary_key=True),
+            sa.Column('customer_id', sa.Integer, sa.ForeignKey('customer.id'), nullable=False),
+            sa.Column('ingredient_id', sa.Integer, sa.ForeignKey('ingredient.id'), nullable=False),
+            sa.Column('product_id', sa.Integer, sa.ForeignKey('product.id'), nullable=False),
+            )
+
 
 def downgrade():
+    op.drop_table('log_similarity_ingredient_x_product_customer')
     op.drop_table('ai_similarity_ingredient_x_product_default')
     op.drop_table('ai_similarity_ingredient_x_product_customer')
     op.drop_table('ai_weight_default')

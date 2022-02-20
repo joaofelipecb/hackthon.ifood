@@ -114,8 +114,11 @@ def downgrade():
         session.execute(
                 sa.delete(ingredient_x_product).
                 where(
-                    ingredient_x_product.c.ingredient_id == 
-                        ingredient_x_product_data['ingredient_id'])
-                    and ingredient_x_product.c.product_id ==
-                        ingredient_x_product_data['product_id']
+                    sa.sql.and_(
+                        (ingredient_x_product.c.ingredient_id == 
+                            ingredient_x_product_data['ingredient_id']),
+                        (ingredient_x_product.c.product_id ==
+                            ingredient_x_product_data['product_id'])
+                        )
+                    )
                 )
