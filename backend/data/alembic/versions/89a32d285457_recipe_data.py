@@ -45,6 +45,7 @@ try:
             sa.Column('amount', sa.Float, nullable=False),
             sa.Column('amount_unit', sa.String(20), nullable=False),
             )
+
 except NameError:
     pass
 
