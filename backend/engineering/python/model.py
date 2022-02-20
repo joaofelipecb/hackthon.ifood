@@ -70,7 +70,23 @@ ai_similarity_ingredient_x_product_default = sa.Table(
         sa.Column('score', sa.Float, nullable=False),
         )
 
-def get_product_recomendation_by_ingredient_id(engine, ingredient_id):
+def get_product_recomendation_by_ingredient_id(engine, ingredient_id, restrictions):
+    def include_restrictions_filter(filter_, restrictions):
+        for restriction in restrictions:
+            if restriction == 'vegetarian':
+                filter_ = sa.sql.and_(filter_, (product.c.vegetarian == True))
+            elif restriction == 'vegan':
+                filter_ = sa.sql.and_(filter_, (product.c.vegan == True))
+            elif restriction == 'diet':
+                filter_ = sa.sql.and_(filter_, (product.c.diet == True))
+            elif restriction == 'light':
+                filter_ = sa.sql.and_(filter_, (product.c.light == True))
+            elif restriction == 'lactose_free':
+                filter_ = sa.sql.and_(filter_, (product.c.lactose_free == True))
+            elif restriction == 'gluten_free':
+                filter_ = sa.sql.and_(filter_, (product.c.gluten_free == True))
+        return filter_
+
     with engine.connect() as connection:
         ret = connection.execute(
                 sa.select(
@@ -88,8 +104,11 @@ def get_product_recomendation_by_ingredient_id(engine, ingredient_id):
                             )
                     ).
                 where(
-                    ai_similarity_ingredient_x_product_default.c.
-                        ingredient_id == ingredient_id
+                    include_restrictions_filter(
+                        ai_similarity_ingredient_x_product_default.c.
+                            ingredient_id == ingredient_id,
+                        restrictions
+                        )
                     ).
                 order_by(
                     ai_similarity_ingredient_x_product_default.c.score.desc()
@@ -100,7 +119,7 @@ def get_product_recomendation_by_ingredient_id(engine, ingredient_id):
                     'id': row[0],
                     'name': row[1],
                     'image': row[2],
-                    'score': row[3]
+                    'score': row[3],
                 }
                 for row in ret
                 ]

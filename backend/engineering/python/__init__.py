@@ -26,6 +26,10 @@ def create_app(test_config=None):
     @app.route('/recipe/<string:recipe_name>/product_recomendation')
     def product_recomendation(recipe_name):
         restrictions = request.args.get('restrictions')
+        if restrictions:
+            restrictions = restrictions.split(',')
+        else:
+            restrictions = []
         engine = sa.create_engine(os.environ['SQLALCHEMY_URL'])
         ingredient_datum = model.get_ingredients_by_recipe_name(
                 engine, recipe_name
@@ -35,7 +39,8 @@ def create_app(test_config=None):
             result_ingredient = deepcopy(ingredient_data)
             result_ingredient['product_recomendation'] = (
                     model.get_product_recomendation_by_ingredient_id(
-                        engine, ingredient_data['id']
+                        engine, ingredient_data['id'],
+                        restrictions=restrictions
                         )
                     )
             result.append(result_ingredient)
