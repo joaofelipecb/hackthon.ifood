@@ -29,11 +29,8 @@ Table grocery {
 
 Table product {
   id int [pk]
-  grocery_id int [ref: > grocery.id, not null]
   name varchar [not null]
   image varchar [not null]
-  price float [not null]
-  price_currency_unit varchar [not null]
   amount float [not null]
   amount_unit varchar [not null]
   vegetarian bool [not null]
@@ -42,6 +39,14 @@ Table product {
   light bool [not null]
   lactose_free bool [not null]
   gluten_free bool [not null]
+}
+
+Table product_x_grocery {
+  id int [pk]
+  product_id int [ref: > product.id, not null]
+  grocery_id int [ref: > grocery.id, not null]
+  price float [not null]
+  price_currency_unit varchar [not null]
 }
 
 Table customer{
