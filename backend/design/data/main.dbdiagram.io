@@ -6,8 +6,15 @@ Table recipe {
 
 Table ingredient {
   id int [pk]
+  name varchar [not null, unique]
+}
+
+Table ingredient_x_recipe {
+  id int [pk]
   recipe_id int [ref: > recipe.id, not null]
-  name varchar [not null]
+  ingredient_id int [ref: > recipe.id, not null]
+  amount float [not null]
+  amount_unit varchar [not null]
 }
 
 Table grocery {

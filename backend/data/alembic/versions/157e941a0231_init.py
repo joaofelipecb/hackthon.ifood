@@ -26,8 +26,16 @@ def upgrade():
     op.create_table(
             'ingredient',
             sa.Column('id', sa.Integer, primary_key=True),
-            sa.Column('recipe_id', sa.Integer, sa.ForeignKey('recipe.id'), nullable=False),
             sa.Column('name', sa.String(200), nullable=False),
+            )
+    op.create_unique_constraint('uq_ingredient_name', 'ingredient', ['name'])
+    op.create_table(
+            'ingredient_x_recipe',
+            sa.Column('id', sa.Integer, primary_key=True),
+            sa.Column('recipe_id', sa.Integer, sa.ForeignKey('recipe.id'), nullable=False),
+            sa.Column('ingredient_id', sa.Integer, sa.ForeignKey('ingredient.id'), nullable=False),
+            sa.Column('amount', sa.Float, nullable=False),
+            sa.Column('amount_unit', sa.String(20), nullable=False),
             )
     op.create_table(
             'grocery',
@@ -101,6 +109,8 @@ def downgrade():
     op.drop_table('customer')
     op.drop_table('product')
     op.drop_table('grocery')
+    op.drop_table('ingredient_x_recipe')
+    op.drop_constraint('uq_ingredient_name', 'ingredient')
     op.drop_table('ingredient')
     op.drop_table('recipe')
 
